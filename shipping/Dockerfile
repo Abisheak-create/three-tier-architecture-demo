@@ -1,16 +1,9 @@
 #
-# Build
+# Build (Updated to use a modern Maven/Java 8 image)
 #
-FROM debian:10 AS build
+FROM maven:3.8-openjdk-8 AS build
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        ca-certificates-java \
-        maven && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    update-ca-certificates -f
-
+# No need to install maven or ca-certificates; they are already here.
 WORKDIR /opt/shipping
 
 COPY pom.xml /opt/shipping/
@@ -19,9 +12,9 @@ COPY src /opt/shipping/src/
 RUN mvn package
 
 #
-# Run
+# Run (Keeping your existing Run stage)
 #
-FROM openjdk:8-jdk
+FROM eclipse-temurin:8-jdk
 
 EXPOSE 8080
 

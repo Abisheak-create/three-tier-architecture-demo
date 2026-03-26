@@ -1,9 +1,13 @@
 #
 # Build the app
 #
-FROM php:7.4-apache
+# Change from 7.4 to 8.2 (Active and supported)
+FROM php:8.2-apache
 
-RUN apt-get update && apt-get install -yqq unzip libzip-dev \
+# Updated dependency list (libzip-dev is still needed but now reachable)
+RUN apt-get update && apt-get install -yqq \
+    unzip \
+    libzip-dev \
     && docker-php-ext-install pdo_mysql opcache zip
 
 # Enable AutoProfile for PHP which is currently opt-in beta
